@@ -80,7 +80,7 @@ class _MainScreenState extends State<MainScreen> {
       case 1:
         return 'Second';
       case 2:
-        return 'Third';
+        return '메모장';
       case 3:
         return 'Fourth';
       default:
