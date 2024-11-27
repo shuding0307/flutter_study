@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:study_flutter/screens/fourth_screen.dart';
-import 'package:study_flutter/screens/home.dart';
 import 'package:study_flutter/screens/second_screen.dart';
 import 'package:study_flutter/screens/third_screen.dart';
 import 'package:study_flutter/widgets/bottom_nav.dart';
@@ -35,7 +34,6 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const Home(),
     const SecondScreen(),
     const ThirdScreen(),
     const FourthScreen(),

@@ -18,12 +18,11 @@ class BottomNav extends StatelessWidget {
       unselectedItemColor: Colors.grey,
       onTap: onTap,
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined), label: 'Second'),
+            icon: Icon(Icons.calendar_month_outlined), label: 'Calendar'),
         BottomNavigationBarItem(
-            icon: Icon(Icons.today_outlined), label: 'Third'),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Fourth'),
+            icon: Icon(Icons.today_outlined), label: 'Memo'),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
       ],
     );
   }
