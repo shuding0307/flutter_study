@@ -11,29 +11,42 @@ class SecondScreen extends StatefulWidget {
 class _SecondScreenState extends State<SecondScreen> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
+  final TextEditingController _controller = TextEditingController();
 
-  formatDate(BuildContext context, DateTime day) {
+  final Map<DateTime, List<Map<String, dynamic>>> tasks = {};
+
+  List<Map<String, dynamic>> get selectedDayTasks {
+    return tasks[selectedDay] ?? [];
+  }
+
+  void _addTask(String task) {
+    setState(() {
+      if (tasks[selectedDay] == null) {
+        tasks[selectedDay] = [];
+      }
+      tasks[selectedDay]!.add({'task': task, 'isChecked': false});
+    });
+    _controller.clear();
+  }
+
+  void _toggleCheckbox(int index) {
+    setState(() {
+      tasks[selectedDay]![index]['isChecked'] =
+          !tasks[selectedDay]![index]['isChecked'];
+    });
+  }
+
+  void _deleteTask(int index) {
+    setState(() {
+      tasks[selectedDay]!.removeAt(index);
+      if (tasks[selectedDay]!.isEmpty) {
+        tasks.remove(selectedDay);
+      }
+    });
+  }
+
+  Widget formatDate(BuildContext context, DateTime day) {
     switch (day.weekday) {
-      case 1:
-        return const Center(
-          child: Text('월'),
-        );
-      case 2:
-        return const Center(
-          child: Text('화'),
-        );
-      case 3:
-        return const Center(
-          child: Text('수'),
-        );
-      case 4:
-        return const Center(
-          child: Text('목'),
-        );
-      case 5:
-        return const Center(
-          child: Text('금'),
-        );
       case 6:
         return const Center(
           child: Text(
@@ -48,8 +61,11 @@ class _SecondScreenState extends State<SecondScreen> {
             style: TextStyle(color: Colors.red),
           ),
         );
+      default:
+        return Center(
+          child: Text(['월', '화', '수', '목', '금'][day.weekday - 1]),
+        );
     }
-    return null;
   }
 
   @override
@@ -68,10 +84,10 @@ class _SecondScreenState extends State<SecondScreen> {
             firstDay: DateTime(2000),
             lastDay: DateTime(2100),
             selectedDayPredicate: (day) => isSameDay(selectedDay, day),
-            onDaySelected: (selectedDay, focusedDay) {
+            onDaySelected: (newSelectedDay, newFocusedDay) {
               setState(() {
-                this.selectedDay = selectedDay;
-                this.focusedDay = focusedDay;
+                selectedDay = newSelectedDay;
+                focusedDay = newFocusedDay;
               });
             },
             calendarBuilders: CalendarBuilders(
@@ -88,28 +104,75 @@ class _SecondScreenState extends State<SecondScreen> {
               ),
             ),
           ),
-          Container(
-            height: 30,
-          ),
+          const SizedBox(height: 20),
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                '선택된날짜',
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
               Text(
                 formattedDate,
                 style: const TextStyle(
                   fontSize: 18,
                   color: Color.fromARGB(255, 253, 101, 91),
                 ),
-              )
+              ),
             ],
-          )
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: selectedDayTasks.isEmpty
+                ? const Center(
+                    child: Text(
+                      '할 일을 추가하세요.',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: selectedDayTasks.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: Checkbox(
+                          value: selectedDayTasks[index]['isChecked'],
+                          onChanged: (_) => _toggleCheckbox(index),
+                        ),
+                        title: Text(
+                          selectedDayTasks[index]['task'],
+                          style: TextStyle(
+                            decoration: selectedDayTasks[index]['isChecked']
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.grey),
+                          onPressed: () => _deleteTask(index),
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.5),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: '할 일 추가',
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    if (_controller.text.isNotEmpty) {
+                      _addTask(_controller.text);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
