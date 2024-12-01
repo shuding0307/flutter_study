@@ -120,16 +120,42 @@ class _ThirdScreenState extends State<ThirdScreen> {
     return Padding(
       padding:
           const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0, bottom: 30.0),
-      child: TextField(
-        controller: contentController,
-        decoration: InputDecoration(
-          hintText: '메모 내용 입력',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
+      child: Column(
+        children: [
+          TextField(
+            controller: contentController,
+            decoration: InputDecoration(
+              hintText: '메모 내용 입력',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+            ),
+            maxLines: null, // 입력 필드가 최대 높이로 보이도록 설정
+            minLines: 19, // 최소 높이를 설정하여 화면 크기에 맞게 적당히 보이도록 함
           ),
-        ),
-        maxLines: null, // 입력 필드가 최대 높이로 보이도록 설정
-        minLines: 19, // 최소 높이를 설정하여 화면 크기에 맞게 적당히 보이도록 함
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // 텍스트 필드에서 입력한 내용을 저장하고 텍스트 필드 숨기기
+                  _editNoteContent(index, contentController.text);
+                  Navigator.pop(context); // BottomSheet 닫기
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 253, 101, 91),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 13),
+                    textStyle: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600)),
+                child: const Text('저장'),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
