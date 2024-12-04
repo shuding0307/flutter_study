@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ThirdScreen extends StatefulWidget {
-  const ThirdScreen({super.key});
+class Memo extends StatefulWidget {
+  const Memo({super.key});
 
   @override
-  State<ThirdScreen> createState() => _ThirdScreenState();
+  State<Memo> createState() => _ThirdScreenState();
 }
 
-class _ThirdScreenState extends State<ThirdScreen> {
+class _ThirdScreenState extends State<Memo> {
   List<Map<String, String>> notes = [];
   final TextEditingController _controller = TextEditingController();
   int? _editingIndex; // 편집 중인 메모 인덱스를 추적

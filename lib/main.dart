@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:study_flutter/screens/fourth_screen.dart';
-import 'package:study_flutter/screens/second_screen.dart';
-import 'package:study_flutter/screens/third_screen.dart';
+import 'package:study_flutter/screens/Setting.dart';
+import 'package:study_flutter/screens/Calendar.dart';
+import 'package:study_flutter/screens/Memo.dart';
 import 'package:study_flutter/widgets/bottom_nav.dart';
 
 void main() {
@@ -34,9 +34,9 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const SecondScreen(),
-    const ThirdScreen(),
-    const FourthScreen(),
+    const Calendar(),
+    const Memo(),
+    const Setting(),
   ];
 
   void _onTabTapped(int index) {
@@ -74,15 +74,13 @@ class _MainScreenState extends State<MainScreen> {
   String _getAppBarTitle() {
     switch (_currentIndex) {
       case 0:
-        return 'Home';
+        return 'Calendar';
       case 1:
-        return 'Second';
+        return 'Memo';
       case 2:
-        return '메모장';
-      case 3:
-        return 'Fourth';
+        return 'Setting';
       default:
-        return 'Home';
+        return 'Calendar';
     }
   }
 }
